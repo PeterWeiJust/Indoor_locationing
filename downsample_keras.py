@@ -11,6 +11,7 @@ import math
 import json
 import plotting_functions as pf
 import pandas as pd
+import wandb
 from keras import metrics
 from data_functions import normalisation,overlap_data,read_overlap_data,downsample_data,DownsampleDataset
 from keras.models import Sequential,Model,load_model
@@ -20,6 +21,7 @@ from sklearn.metrics import mean_squared_error
 from keras.optimizers import Adam, RMSprop
 from keras.utils import plot_model
 from keras.callbacks import EarlyStopping, Callback, TensorBoard
+from wandb.keras import WandbCallback
 
 np.random.seed(7)
 # Hyper-parameters
@@ -30,6 +32,11 @@ num_layers = 1
 output_dim = 2
 LR = 0.001
 epoch=300
+
+wandb.init(entity="sensor_downsample",project="sensor_downsample_edinburgh",sync_tensorboard=True,
+           config={"epochs": num_epochs,"batch_size": batch_size,    
+                   }
+           )
 
 train_sensor=DownsampleDataset()
 SensorTrain=train_sensor.sensortrain
@@ -51,11 +58,12 @@ model.compile(optimizer=RMSprop(LR),
 
 model.fit(SensorTrain, locationtrain,
                        validation_data=(SensorVal,locationval),
-                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard]
+                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard,WandbCallback()]
                        #shuffle=False,
                        )
 
-model.save("romaniamodel/sensor_downsample_model.h5")
+model.save("model/sensor_downsample_model.h5")
+mmloc.save(os.path.join(wandb.run.dir, "wanbd_sensor_downsample.h5"))
 fig=plt.figure()
 locPrediction = model.predict(SensorTest, batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
@@ -65,4 +73,5 @@ plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title('sensor_downsample_model prediction')
-fig.savefig("romaniapredictionpng/sensor_downsample_locprediction.png")
+fig.savefig("predictionpng/sensor_downsample_locprediction.png")
+wandb.log({"chart": wandb.Image("predictionpng/sensor_downsample_model_locprediction.png")})

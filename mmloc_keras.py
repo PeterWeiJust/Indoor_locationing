@@ -64,7 +64,7 @@ output=Dense(output_dim,activation='relu')(hidden)
 mmloc=Model(inputs=[sensorinput,wifiinput],outputs=[output])
 
 mmloc.compile(optimizer=RMSprop(learning_rate),
-                 loss='mse',metrics=['acc'])
+                 loss='mse',metrics=[metrics.mse])
 
 model_name = "mmloc_multi_model"
 tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))

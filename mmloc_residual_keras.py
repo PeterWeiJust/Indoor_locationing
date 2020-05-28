@@ -4,6 +4,7 @@ import math
 import tensorflow as tf
 import plotting_functions as pf
 import pandas as pd
+import wandb
 from keras import metrics
 from data_functions import normalisation,overlap_data,read_overlap_data,downsample_data,DownsampleDataset
 from keras.models import Model
@@ -13,6 +14,7 @@ from sklearn.metrics import mean_squared_error
 from keras.optimizers import Adam, RMSprop
 from keras.utils import plot_model
 from keras.callbacks import EarlyStopping, Callback, TensorBoard
+from wandb.keras import WandbCallback
 
 # Hyper-parameters
 sensor_input_size = 3
@@ -22,6 +24,12 @@ batch_size = 100
 output_dim = 2
 num_epochs = 300
 learning_rate = 0.001
+
+wandb.init(entity="residual_mmloc",project="residual_mmloc_edinburgh",sync_tensorboard=True,
+           config={"epochs": num_epochs,"batch_size": batch_size,    
+                   }
+           )
+
 
 #load downsample dataset
 train_sensor=DownsampleDataset()
@@ -87,12 +95,13 @@ tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))
 
 mmloc.fit([SensorTrain,WifiTrain], locationtrain,
                        validation_data=([SensorVal,WifiVal],locationval),
-                       epochs=num_epochs, batch_size=batch_size, verbose=1,callbacks=[tensorboard]
+                       epochs=num_epochs, batch_size=batch_size, verbose=1,callbacks=[tensorboard,WandbCallback()]
                        #shuffle=False,
                        )
 
 #save model
-mmloc.save("romaniamodel/mmloc_multi_residual.h5")
+mmloc.save("model/mmloc_multi_residual.h5")
+mmloc.save(os.path.join(wandb.run.dir, "wanbd_residual_mmloc_multi.h5"))
 fig=plt.figure()
 locPrediction = mmloc.predict([SensorTest,WifiTest], batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
@@ -102,4 +111,5 @@ plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title('mmloc_multi_residual prediction')
-fig.savefig("romaniapredictionpng/mmloc_multi_residual_locprediction.png")
+fig.savefig("predictionpng/mmloc_multi_residual_locprediction.png")
+wandb.log({"chart": wandb.Image("predictionpng/residual_mmloc_multi_locprediction.png")})
