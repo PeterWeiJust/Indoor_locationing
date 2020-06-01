@@ -8,6 +8,7 @@ Created on Mon Feb 24 14:48:28 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
 import json
 import plotting_functions as pf
 import pandas as pd
@@ -31,10 +32,10 @@ hidden_size = 193
 num_layers = 1
 output_dim = 2
 LR = 0.001
-epoch=300
+epoch=100
 
 wandb.init(entity="sensor_downsample",project="sensor_downsample_edinburgh",sync_tensorboard=True,
-           config={"epochs": num_epochs,"batch_size": batch_size,    
+           config={"epochs": epoch,"batch_size": 100,    
                    }
            )
 
@@ -54,7 +55,7 @@ sensoroutput=Dense(2)(sensorlstm)
 model=Model(inputs=[sensorinput],outputs=[sensoroutput])
 
 model.compile(optimizer=RMSprop(LR),
-                 loss='mse',metrics=[metrics.mse])
+                 loss='mse',metrics=["acc"])
 
 model.fit(SensorTrain, locationtrain,
                        validation_data=(SensorVal,locationval),
@@ -62,8 +63,8 @@ model.fit(SensorTrain, locationtrain,
                        #shuffle=False,
                        )
 
-model.save("model/sensor_downsample_model.h5")
-mmloc.save(os.path.join(wandb.run.dir, "wanbd_sensor_downsample.h5"))
+model.save("romaniamodel/sensor_downsample_model.h5")
+model.save(os.path.join(wandb.run.dir, "wanbd_sensor_downsample.h5"))
 fig=plt.figure()
 locPrediction = model.predict(SensorTest, batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)

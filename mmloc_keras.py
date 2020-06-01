@@ -17,12 +17,12 @@ import wandb
 from wandb.keras import WandbCallback
 # Hyper-parameters
 sensor_input_size = 3
-wifi_input_size = 102
+wifi_input_size = 193
 hidden_size = 128
 batch_size = 100
 output_dim = 2
-num_epochs = 500
-learning_rate = 0.005
+num_epochs = 100
+learning_rate = 0.001
 
 
 wandb.init(entity="mmloc",project="mmloc_edinburgh",sync_tensorboard=True,
@@ -64,7 +64,7 @@ output=Dense(output_dim,activation='relu')(hidden)
 mmloc=Model(inputs=[sensorinput,wifiinput],outputs=[output])
 
 mmloc.compile(optimizer=RMSprop(learning_rate),
-                 loss='mse',metrics=[metrics.mse])
+                 loss='mse',metrics=["acc"])
 
 model_name = "mmloc_multi_model"
 tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))
@@ -76,7 +76,7 @@ mmloc.fit([SensorTrain,WifiTrain], locationtrain,
                        )
 
 #save model
-mmloc.save("model/mmloc_multi.h5")
+mmloc.save("romaniamodel/mmloc_multi.h5")
 mmloc.save(os.path.join(wandb.run.dir, "wanbd_mmloc_multi.h5"))
 fig=plt.figure()
 locPrediction = mmloc.predict([SensorTest,WifiTest], batch_size=100)
@@ -87,5 +87,5 @@ plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title('mmloc_multi prediction')
-fig.savefig("predictionpng/mmloc_multi_locprediction.png")
-wandb.log({"chart": wandb.Image("predictionpng/mmloc_multi_locprediction.png")})
+fig.savefig("romaniapredictionpng/mmloc_multi_locprediction.png")
+wandb.log({"chart": wandb.Image("romaniapredictionpng/mmloc_multi_locprediction.png")})

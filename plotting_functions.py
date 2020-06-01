@@ -5,7 +5,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
+def convert_data_to_utm(dd):
+    rowlist=[]
+    collist=[]
+    for i in dd:
+        rowlist.append((i-1)%20*2+91)
+        collist.append((i-1)//20*2+91)
+    return np.transpose(np.vstack((rowlist,collist)))
 
+def normalized_test_data(dd):
+    min_c1 = 99
+    max_c1 = 130
+    min_c2 = 99
+    max_c2 = 130
+
+    d1 = dd[:, 0]
+    d2 = dd[:, 1]
+    d3 = dd[:, 2]
+    d4 = dd[:, 3]
+
+    inverse_to_utm_x = lambda x: (min_c1 + x * (max_c1 - min_c1))
+    inverse_to_utm_y = lambda x: (min_c2 + x * (max_c2 - min_c2))
+    
+    id1 = inverse_to_utm_x(d1)
+    id2 = inverse_to_utm_y(d2)
+    
+    return np.transpose(np.vstack((np.vstack((id1, id2)), np.vstack((d3, d4)))))    
+
+    
 def normalized_data_to_utm(dd):
     min_c1 = 99
     max_c1 = 130

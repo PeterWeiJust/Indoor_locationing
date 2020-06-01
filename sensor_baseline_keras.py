@@ -29,8 +29,8 @@ input_size = 3
 hidden_size = 193
 num_layers = 1
 output_dim = 2
-LR = 0.005
-epoch=50
+LR = 0.001
+epoch=100
 
 wandb.init(entity="sensor_baseline",project="sensor_baseline_edinburgh",sync_tensorboard=True,
            config={"epochs": num_epochs,"batch_size": batch_size,    
@@ -61,8 +61,8 @@ model.fit(SensorTrain, locationtrain,
                        #shuffle=False,
                        )
 
-model.save("model/sensor_baseline_model.h5")
-mmloc.save(os.path.join(wandb.run.dir, "wanbd_sensor_baseline.h5"))
+model.save("romaniamodel/sensor_baseline_model.h5")
+model.save(os.path.join(wandb.run.dir, "wanbd_sensor_baseline.h5"))
 fig=plt.figure()
 locPrediction = model.predict(SensorTest, batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
@@ -72,5 +72,5 @@ plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title('sensor_baseline_model prediction')
-fig.savefig("predictionpng/sensor_baseline_locprediction.png")
+fig.savefig("romaniapredictionpng/sensor_baseline_locprediction.png")
 wandb.log({"chart": wandb.Image("predictionpng/sensor_baseline_model_locprediction.png")})

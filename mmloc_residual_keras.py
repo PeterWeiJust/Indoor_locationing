@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
 import tensorflow as tf
 import plotting_functions as pf
 import pandas as pd
@@ -22,11 +23,11 @@ wifi_input_size = 193
 hidden_size = 128
 batch_size = 100
 output_dim = 2
-num_epochs = 300
+num_epochs = 100
 learning_rate = 0.001
 
 wandb.init(entity="residual_mmloc",project="residual_mmloc_edinburgh",sync_tensorboard=True,
-           config={"epochs": num_epochs,"batch_size": batch_size,    
+          config={"epochs": num_epochs,"batch_size": batch_size,    
                    }
            )
 
@@ -88,7 +89,7 @@ output=Dense(output_dim)(MRNHidden)
 mmloc=Model(inputs=[sensorinput,wifiinput],outputs=[output])
 
 mmloc.compile(optimizer=RMSprop(learning_rate),
-                 loss='mse',metrics=[metrics.mse])
+                 loss='mse',metrics=["acc"])
 
 model_name = "mmloc_multi_residual_model"
 tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))
