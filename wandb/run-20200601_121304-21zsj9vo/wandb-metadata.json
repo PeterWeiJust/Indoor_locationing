@@ -1,0 +1,19 @@
+{
+    "root": "C:\\Users\\weixi\\Documents\\GitHub\\Indoor_locationing",
+    "program": "C:\\Users\\weixi\\Documents\\GitHub\\Indoor_locationing\\mmloc_keras.py",
+    "codePath": "mmloc_keras.py",
+    "startedAt": "2020-06-01T12:13:03.256857",
+    "host": "DESKTOP-A1NGI57",
+    "username": "weixijia",
+    "executable": "C:\\Users\\weixi\\.conda\\envs\\mmloc\\python.exe",
+    "os": "Windows-10-10.0.18362-SP0",
+    "python": "3.6.10",
+    "cpu_count": 6,
+    "args": [],
+    "state": "running",
+    "jobType": null,
+    "mode": "run",
+    "name": "crimson-terrain-5",
+    "project": "mmloc_bucharest",
+    "heartbeatAt": "2020-06-01T12:13:55.201826"
+}
