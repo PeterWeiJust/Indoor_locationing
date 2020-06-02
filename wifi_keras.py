@@ -4,7 +4,7 @@ Created on Thu Feb 27 12:01:12 2020
 
 @author: mwei_archor
 """
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import math
