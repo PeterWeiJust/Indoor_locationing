@@ -21,15 +21,13 @@ wifi_input_size = 193
 hidden_size = 128
 batch_size = 100
 output_dim = 2
-num_epochs = 100
+num_epochs = 10
 learning_rate = 0.001
 
 model_name = "mmloc_bucharest"
 
 wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
-           config={"epochs": num_epochs,"batch_size": batch_size,"hidden_size":hidden_size,
-                   "learning_rate":learning_rate,"sensor_input_size":sensor_input_size,
-                   "wifi_input_size":wifi_input_size,"output_dim":output_dim
+           config={"epochs": num_epochs,"batch_size": batch_size,    
                    }
            )
 
