@@ -23,7 +23,7 @@ wifi_input_size = 193
 hidden_size = 128
 batch_size = 100
 output_dim = 2
-num_epochs = 100
+num_epochs = 3
 learning_rate = 0.001
 
 wandb.init(entity="residual_mmloc",project="residual_mmloc_edinburgh",sync_tensorboard=True,
@@ -101,9 +101,9 @@ mmloc.fit([SensorTrain,WifiTrain], locationtrain,
                        )
 
 #save model
-mmloc.save("model/mmloc_multi_residual.h5")
+mmloc.save("romaniamodel/mmloc_multi_residual.h5")
 mmloc.save(os.path.join(wandb.run.dir, "wanbd_residual_mmloc_multi.h5"))
-fig=plt.figure()
+fig1=plt.figure()
 locPrediction = mmloc.predict([SensorTest,WifiTest], batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
 data=pf.normalized_data_to_utm(np.hstack((locationtest, aveLocPrediction)))
@@ -111,19 +111,19 @@ plt.plot(data[:,0],data[:,1],'b',data[:,2],data[:,3],'r')
 plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
-plt.title('mmloc_multi_residual prediction')
-fig.savefig("predictionpng/mmloc_multi_residual_locprediction.png")
+plt.title('xxmmloc_multi_residual prediction')
+fig1.savefig("predictionpng/mmloc_multi_residual_locprediction.png")
 wandb.log({"chart": wandb.Image("predictionpng/residual_mmloc_multi_locprediction.png")})
 #draw cdf picture
 plt.close()
 fig=plt.figure()
 bin_edge,cdf=pf.cdfdiff(target=locationtest,predict=locPrediction)
-plt.plot(bin_edge[0:-1],cdf,linestyle='--',label="mmloc_residual",color='r'）
+plt.plot(bin_edge[0:-1],cdf,linestyle='--',label="mmloc_residual",color='r')
 plt.xlim(xmin = 0)
 plt.ylim((0,1))
 plt.xlabel("metres")
 plt.ylabel("CDF")
-plt.legend(names,loc='upper right')
+plt.legend("mmloc_residual_keras",loc='upper right')
 plt.grid(True)
 plt.title('mmloc_residual CDF')
 fig.savefig("mmloc_residual_CDF.pdf")

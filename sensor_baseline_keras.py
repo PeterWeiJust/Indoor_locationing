@@ -6,6 +6,7 @@ Created on Thu Feb 27 16:04:54 2020
 """
 
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 import math
 import json
@@ -25,15 +26,16 @@ from wandb.keras import WandbCallback
 np.random.seed(7)
 # Hyper-parameters
 timestep=100
+batch_size=100
 input_size = 3
 hidden_size = 193
 num_layers = 1
 output_dim = 2
 LR = 0.001
-epoch=100
+epoch=1
 
 wandb.init(entity="sensor_baseline",project="sensor_baseline_edinburgh",sync_tensorboard=True,
-           config={"epochs": num_epochs,"batch_size": batch_size,    
+           config={"epochs": epoch,"batch_size": batch_size,    
                    }
            )
 
@@ -63,7 +65,7 @@ model.fit(SensorTrain, locationtrain,
 
 model.save("romaniamodel/sensor_baseline_model.h5")
 model.save(os.path.join(wandb.run.dir, "wanbd_sensor_baseline.h5"))
-fig=plt.figure()
+fig1=plt.figure()
 locPrediction = model.predict(SensorTest, batch_size=100)
 aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
 data=pf.normalized_data_to_utm(np.hstack((locationtest, aveLocPrediction)))
@@ -72,18 +74,18 @@ plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title('sensor_baseline_model prediction')
-fig.savefig("romaniapredictionpng/sensor_baseline_locprediction.png")
+fig1.savefig("romaniapredictionpng/sensor_baseline_locprediction.png")
 wandb.log({"chart": wandb.Image("predictionpng/sensor_baseline_model_locprediction.png")})
 #draw cdf picture
 plt.close()
 fig=plt.figure()
 bin_edge,cdf=pf.cdfdiff(target=locationtest,predict=locPrediction)
-plt.plot(bin_edge[0:-1],cdf,linestyle='--',label="sensor_baseline",color='r'）
+plt.plot(bin_edge[0:-1],cdf,linestyle='--',label="sensor_baseline",color='r')
 plt.xlim(xmin = 0)
 plt.ylim((0,1))
 plt.xlabel("metres")
 plt.ylabel("CDF")
-plt.legend(names,loc='upper right')
+plt.legend("sensor_baseline",loc='upper right')
 plt.grid(True)
 plt.title('sensor_baseline CDF')
 fig.savefig("sensor_baseline_CDF.pdf")
