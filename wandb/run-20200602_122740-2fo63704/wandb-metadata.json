@@ -1,0 +1,19 @@
+{
+    "root": "C:\\Users\\weixi\\Documents\\GitHub\\Indoor_locationing",
+    "program": "C:\\Users\\weixi\\Documents\\GitHub\\Indoor_locationing\\sensor_baseline_keras.py",
+    "codePath": "sensor_baseline_keras.py",
+    "startedAt": "2020-06-02T12:27:40.891803",
+    "host": "DESKTOP-A1NGI57",
+    "username": "weixijia",
+    "executable": "C:\\Users\\weixi\\.conda\\envs\\mmloc\\python.exe",
+    "os": "Windows-10-10.0.18362-SP0",
+    "python": "3.6.10",
+    "cpu_count": 6,
+    "args": [],
+    "state": "running",
+    "jobType": null,
+    "mode": "run",
+    "name": "eternal-breeze-10",
+    "project": "mmloc_bucharest",
+    "heartbeatAt": "2020-06-02T12:27:58.985168"
+}

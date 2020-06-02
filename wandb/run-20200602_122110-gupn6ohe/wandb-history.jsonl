@@ -1,0 +1,2 @@
+{"epoch": 0, "val_loss": 0.1058673087831852, "val_acc": 0.7189973592758179, "loss": 0.1230630460480675, "acc": 0.7112522125244141, "_runtime": 23.476446866989136, "_timestamp": 1591100491.811515, "_step": 0}
+{"chart": {"_type": "image-file", "path": "media/images/mmloc_bucharest_locprediction_72abdca7.png", "sha256": "72abdca7a6eea15898cc8f7a24bf8ebdf7ffad32a15fdf64a06344a4284f35cc", "size": 14188, "format": "png"}, "_runtime": 23.813758373260498, "_timestamp": 1591100492.1488266, "_step": 1}
