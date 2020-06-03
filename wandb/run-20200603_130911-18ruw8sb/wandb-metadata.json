@@ -1,0 +1,18 @@
+{
+    "root": "C:\\Users\\weixi\\Documents\\GitHub\\Indoor_locationing",
+    "program": "<python with no main file>",
+    "startedAt": "2020-06-03T13:09:11.027079",
+    "host": "DESKTOP-A1NGI57",
+    "username": "weixijia",
+    "executable": "C:\\Users\\weixi\\.conda\\envs\\mmloc\\python.exe",
+    "os": "Windows-10-10.0.18362-SP0",
+    "python": "3.6.10",
+    "cpu_count": 6,
+    "args": [],
+    "state": "running",
+    "jobType": null,
+    "mode": "run",
+    "name": "sunny-puddle-1",
+    "project": "wifiClass_bucharest",
+    "heartbeatAt": "2020-06-03T13:09:19.535318"
+}

@@ -34,7 +34,7 @@ batch_size = 100
 hidden_size = 128
 output_dim = 2
 learning_rate = 0.001
-epoch=1
+epoch=5
 
 model_name = "wifiDNN_bucharest"
 

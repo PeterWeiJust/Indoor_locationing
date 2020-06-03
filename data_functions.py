@@ -55,8 +55,8 @@ class WifiDataset(torch.utils.data.Dataset):
     def __init__(self,mode="train",transform=torch.from_numpy):
         self.mode=mode
         self.transform=transform
-        self.trainx,self.trainy=read_wifi_data_classification(1,6)
-        self.valx,self.valy=read_wifi_data_classification(7,7)
+        self.trainx,self.trainy=read_wifi_data(1,6)
+        self.valx,self.valy=read_wifi_data(7,7)
         self.testx,self.testy=read_wifi_data(8,8)
         self.length=len(self.trainx)+len(self.valx)+len(self.testx)
     
@@ -84,6 +84,38 @@ class WifiDataset(torch.utils.data.Dataset):
         else:
             return len(self.testx)
 
+class WifiClusterDataset(torch.utils.data.Dataset):
+    def __init__(self,mode="train",transform=torch.from_numpy):
+        self.mode=mode
+        self.transform=transform
+        self.trainx,self.trainy=read_wifi_data_classification(1,6)
+        self.valx,self.valy=read_wifi_data_classification(7,7)
+        self.testx,self.testy=read_wifi_data_classification(8,8)
+        self.length=len(self.trainx)+len(self.valx)+len(self.testx)
+    
+    
+    def __getitem__(self, index):
+        if self.mode=="train":
+            data=self.trainx[index]
+            label=self.trainy[index]
+        elif self.mode=="val":
+            data=self.valx[index]
+            label=self.valy[index]
+        else:
+            data=self.testx[index]
+            label=self.testy[index]
+        
+        if self.transform is not None:
+            data=self.transform(data)
+            label=self.transform(label)
+            
+        return data,label
+        
+    def __len__(self):
+        if self.mode=="train":
+            return len(self.trainx)
+        else:
+            return len(self.testx)
 
 class DownsampleDataset(torch.utils.data.Dataset):
     def __init__(self,tw=1000,slide=100,mode="train",transform=torch.from_numpy):
