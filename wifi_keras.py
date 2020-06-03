@@ -36,9 +36,13 @@ output_dim = 2
 learning_rate = 0.001
 epoch=1
 
-wandb.init(entity="wifi_DNN",project="wifi_DNN",sync_tensorboard=True,
-           config={"epochs": epoch,"batch_size": batch_size,    
-                  }
+model_name = "wifiDNN_bucharest"
+
+wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
+           config={"epochs": epoch,"batch_size": batch_size,"hidden_size":hidden_size,
+                   "learning_rate":learning_rate,
+                   "output_dim":output_dim,
+                   }
            )
 
 training=WifiDataset()
@@ -58,7 +62,7 @@ locationval=np_utils.to_categorical(locationval-mins)
 
 output_dim=locationlabel.shape[1]
 
-model_name = "wifi_DNN_model_romania"
+
 tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))
 model = Sequential()
 model.add(Dense(hidden_size,activation='relu',input_dim=wifi_input_size))
@@ -73,14 +77,14 @@ model.compile(optimizer=RMSprop(learning_rate),
 
 model.fit(WifiTrain, locationlabel,
                        validation_data=(WifiVal,locationval),
-                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard,WandbCallback()]
+                       epochs=epoch, batch_size=batch_size, verbose=1,callbacks=[tensorboard,WandbCallback()]
                        #shuffle=False,
                        )
 
-model.save("romaniamodel/wifi_DNN_model.h5")
-model.save(os.path.join(wandb.run.dir, "wanbd_wifi_DNN.h5"))
+model.save("romaniamodel/"+str(model_name)+".h5")
+model.save(os.path.join(wandb.run.dir, "wanbd_"+str(model_name)+".h5"))
 fig1=plt.figure()
-locPrediction = model.predict(WifiTest, batch_size=100)
+locPrediction = model.predict(WifiTest, batch_size=batch_size)
 locpredlabel=np.argmax(locPrediction,axis=1)+mins
 
 #aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
@@ -91,18 +95,19 @@ plt.plot(data[:,0],data[:,1],'b',data[:,2],data[:,3],'r')
 plt.legend(['target','prediction'],loc='upper right')
 plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
-plt.title('wifi_DNN_model prediction')
-fig1.savefig("romaniapredictionpng/wifi_locprediction.png")
-wandb.log({"chart": wandb.Image("romaniapredictionpng/wifi_locprediction.png")})
+plt.title(str(model_name)+" Prediction")
+fig1.savefig("romaniapredictionpng/"+str(model_name)+"_locprediction.png")
+wandb.log({"chart": wandb.Image("romaniapredictionpng/"+str(model_name)+"_locprediction.png")})
 #draw cdf picture
 fig=plt.figure()
 bin_edge,cdf=pf.cdfdiff(target=locationtest,predict=loclatlng)
-plt.plot(bin_edge[0:-1],cdf,linestyle='--',label="wifi_DNN",color='r')
+plt.plot(bin_edge[0:-1],cdf,linestyle='--',label=str(model_name),color='r')
 plt.xlim(xmin = 0)
 plt.ylim((0,1))
 plt.xlabel("metres")
 plt.ylabel("CDF")
-plt.legend("wifi_DNN",loc='upper right')
+plt.legend(str(model_name),loc='upper right')
 plt.grid(True)
-plt.title('wifi CDF')
-fig.savefig("wifi_CDF.pdf")
+plt.title((str(model_name)+' CDF'))
+fig.savefig("romaniacdf/"+str(model_name)+"_CDF.pdf")
+wandb.log({"chart": wandb.Image("romaniacdf/"+str(model_name)+"_CDF.pdf")})

@@ -27,7 +27,7 @@ learning_rate = 0.001
 model_name = "mmloc_bucharest"
 
 wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
-           config={"epochs": num_epochs,"batch_size": batch_size,"hidden_size":hidden_size,
+           config={"epochs": num_epochs,"batch_size": batch_size,"wifi_hidden_size":hidden_size,
                    "learning_rate":learning_rate,"sensor_input_size":sensor_input_size,
                    "wifi_input_size":wifi_input_size,"output_dim":output_dim
                    }
@@ -82,8 +82,8 @@ mmloc.fit([SensorTrain,WifiTrain], locationtrain,
 mmloc.save("romaniamodel/"+str(model_name)+".h5")
 mmloc.save(os.path.join(wandb.run.dir, "wanbd_"+str(model_name)+".h5"))
 fig1=plt.figure()
-locPrediction = mmloc.predict([SensorTest,WifiTest], batch_size=100)
-aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
+locPrediction = mmloc.predict([SensorTest,WifiTest], batch_size=batch_size)
+aveLocPrediction = pf.get_ave_prediction(locPrediction, batch_size)
 data=pf.normalized_data_to_utm(np.hstack((locationtest, aveLocPrediction)))
 plt.plot(data[:,0],data[:,1],'b',data[:,2],data[:,3],'r')
 plt.legend(['target','prediction'],loc='upper right')
