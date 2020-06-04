@@ -1,0 +1,13 @@
+diff --git a/wifi_class_keras.py b/wifi_class_keras.py
+index 7afb6eb..7b2d7ab 100644
+--- a/wifi_class_keras.py
++++ b/wifi_class_keras.py
+@@ -32,7 +32,7 @@ np.random.seed(7)
+ wifi_input_size = 193
+ batch_size = 100
+ hidden_size = 128
+-output_dim = 2
++output_dim = 1
+ learning_rate = 0.001
+ epoch=5
+ 

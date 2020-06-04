@@ -1,0 +1,23 @@
+{
+    "root": "/Users/weixijia/Indoor_locationing",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "https://github.com/lwkwkss/Indoor_locationing.git",
+        "commit": "96e79e97cba7c2d1c18c3cd785963b851925bbf2"
+    },
+    "email": "jsd1994wxj@gmail.com",
+    "startedAt": "2020-06-04T01:36:48.204323",
+    "host": "Simons-Mac-mini.local",
+    "username": "weixijia",
+    "executable": "/opt/anaconda3/envs/mmloc/bin/python",
+    "os": "Darwin-19.5.0-x86_64-i386-64bit",
+    "python": "3.6.10",
+    "cpu_count": 6,
+    "args": [],
+    "state": "running",
+    "jobType": null,
+    "mode": "run",
+    "name": "noble-resonance-2",
+    "project": "wifiClass_bucharest",
+    "heartbeatAt": "2020-06-04T01:36:55.441307"
+}
