@@ -55,8 +55,8 @@ class WifiDataset(torch.utils.data.Dataset):
     def __init__(self,mode="train",transform=torch.from_numpy):
         self.mode=mode
         self.transform=transform
-        self.trainx,self.trainy=read_wifi_data(1,6)
-        self.valx,self.valy=read_wifi_data(7,7)
+        self.trainx,self.trainy=read_wifi_data_classification(1,6)
+        self.valx,self.valy=read_wifi_data_classification(7,7)
         self.testx,self.testy=read_wifi_data(8,8)
         self.length=len(self.trainx)+len(self.valx)+len(self.testx)
     
@@ -114,9 +114,11 @@ class WifiClusterDataset(torch.utils.data.Dataset):
     def __len__(self):
         if self.mode=="train":
             return len(self.trainx)
+        elif self.mode=="val":
+            return len(self.valx)
         else:
             return len(self.testx)
-
+        
 class DownsampleDataset(torch.utils.data.Dataset):
     def __init__(self,tw=1000,slide=100,mode="train",transform=torch.from_numpy):
         self.mode=mode
@@ -177,6 +179,7 @@ def read_wifi_data_classification(file_start,file_end):
         dataset=pd.read_csv(path,usecols=[i for i in range(16,209)]) 
         dataset = dataset.dropna()
         Y=pd.read_csv(path,usecols=[209]) 
+        Y=np.array(Y)
         wifidata=np.array(dataset)
     else:
         wifi = []
@@ -191,6 +194,7 @@ def read_wifi_data_classification(file_start,file_end):
         dataset_label=pd.concat(res_label, axis=0)
         Y=np.array(dataset_label)#convert df to array
         wifidata=pd.concat(wifi,axis=0)
+        wifidata=np.array(wifidata)
     return wifidata,Y
 
 
