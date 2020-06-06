@@ -13,6 +13,13 @@ def convert_data_to_utm(dd):
         collist.append((i-1)//20*2+91)
     return np.transpose(np.vstack((rowlist,collist)))
 
+def normalized_data(dd):
+    d1 = dd[:, 0]
+    d2 = dd[:, 1]
+    d3 = dd[:, 2]
+    d4 = dd[:, 3]
+    return np.transpose(np.vstack((np.vstack((d1, d2)), np.vstack((d3, d4)))))
+
 def normalized_test_data(dd):
     min_c1 = 99
     max_c1 = 130
