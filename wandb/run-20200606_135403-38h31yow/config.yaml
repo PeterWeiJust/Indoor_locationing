@@ -1,0 +1,26 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.9.0
+    framework: torch
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    python_version: 3.6.10
+    session_history: code\_session_history.ipynb
+batch_size:
+  desc: null
+  value: 100
+epochs:
+  desc: null
+  value: 50
+hidden_size:
+  desc: null
+  value: 128
+learning_rate:
+  desc: null
+  value: 0.001
+output_dim:
+  desc: null
+  value: 2

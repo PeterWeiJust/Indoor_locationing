@@ -36,6 +36,7 @@ output_dim = 2
 learning_rate = 0.001
 epoch=100
 
+model_name = "wifi_DNN_model_romania"
 wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
            config={"epochs": epoch,"batch_size": batch_size,"hidden_size":hidden_size,
                    "learning_rate":learning_rate,
@@ -53,7 +54,7 @@ locationval=training.valy
 WifiTest=training.testx
 locationtest=training.testy
 
-model_name = "wifi_DNN_model_romania"
+
 tensorboard = TensorBoard(log_dir='logs/{}'.format(model_name))
 model = Sequential()
 model.add(Dense(hidden_size,activation='relu',input_dim=wifi_input_size))
@@ -68,16 +69,16 @@ model.compile(optimizer=RMSprop(learning_rate),
 
 model.fit(WifiTrain, locationlabel,
                        validation_data=(WifiVal,locationval),
-                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard,WandbCallback()]
+                       epochs=epoch, batch_size=batch_size, verbose=1,callbacks=[tensorboard,WandbCallback()]
                        #shuffle=False,
                        )
 
-model.save("romaniamodel/wifi_DNN_model.h5")
-model.save(os.path.join(wandb.run.dir, "wanbd_wifi_DNN.h5"))
+model.save("romaniamodel/"+str(model_name)+".h5")
+model.save(os.path.join(wandb.run.dir, "wanbd_"+str(model_name)+".h5"))
 fig1=plt.figure()
-locPrediction = model.predict(WifiTest, batch_size=100)
+locPrediction = model.predict(WifiTest, batch_size=batch_size)
 
-aveLocPrediction = pf.get_ave_prediction(locPrediction, 100)
+aveLocPrediction = pf.get_ave_prediction(locPrediction, batch_size)
 data=pf.normalized_data_to_utm(np.hstack((locationtest, aveLocPrediction)))
 plt.plot(data[:,0],data[:,1],'b',data[:,2],data[:,3],'r')
 plt.legend(['target','prediction'],loc='upper right')
