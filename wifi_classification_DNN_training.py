@@ -22,7 +22,7 @@ from sklearn.metrics import mean_squared_error
 from keras.optimizers import Adam, RMSprop,SGD
 from keras.utils import plot_model
 from keras.callbacks import EarlyStopping, Callback, TensorBoard
-from data_functions import DownsampleDataset,WifiDataset
+from data_functions import DownsampleDataset,WifiDataset,WifiClusterDataset
 from keras.utils import np_utils
 from wandb.keras import WandbCallback
 
@@ -45,7 +45,7 @@ wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
                    }
            )
 
-training=WifiDataset()
+training=WifiClusterDataset()
 WifiTrain=training.trainx
 locationlabel=training.trainy
 

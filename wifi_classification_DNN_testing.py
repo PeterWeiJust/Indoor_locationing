@@ -22,7 +22,7 @@ from sklearn.metrics import mean_squared_error
 from keras.optimizers import Adam, RMSprop,SGD
 from keras.utils import plot_model
 from keras.callbacks import EarlyStopping, Callback, TensorBoard
-from data_functions import DownsampleDataset,WifiDataset
+from data_functions import DownsampleDataset,WifiDataset,WifiClusterDataset
 from keras.utils import np_utils
 from wandb.keras import WandbCallback
 
@@ -30,12 +30,12 @@ np.random.seed(7)
 
 model_name = "wifiDNN_classification_bucharest_testing"
 
-wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
-           config={"epochs": epoch,"batch_size": batch_size,"hidden_size":hidden_size,
-                   "learning_rate":learning_rate,
-                   "output_dim":output_dim,
-                   }
-           )
+#wandb.init(entity="mmloc",project=model_name,sync_tensorboard=True,
+#           config={"epochs": epoch,"batch_size": batch_size,"hidden_size":hidden_size,
+#                   "learning_rate":learning_rate,
+#                   "output_dim":output_dim,
+#                   }
+#           )
 
 # Hyper-parameters
 wifi_input_size = 193
@@ -45,12 +45,7 @@ output_dim = 2
 learning_rate = 0.001
 epoch=50
 
-#wandb.init(entity="wifi_DNN",project="wifi_DNN",sync_tensorboard=True,
-#           config={"epochs": epoch,"batch_size": batch_size,    
-#                  }
-#           )
-
-training=WifiDataset()
+training=WifiClusterDataset()
 WifiTrain=training.trainx
 locationlabel=training.trainy
 
@@ -81,12 +76,12 @@ model.compile(optimizer=RMSprop(learning_rate),
 
 model.fit(WifiTrain, locationlabels,
                        validation_data=(WifiVal,locationval),
-                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard,WandbCallback()]
+                       epochs=epoch, batch_size=100, verbose=1,callbacks=[tensorboard]
                        #shuffle=False,
                        )
 
 model.save("romaniamodel/"+str(model_name)+".h5")
-model.save(os.path.join(wandb.run.dir, "wanbd_"+str(model_name)+".h5"))
+#.save(os.path.join(wandb.run.dir, "wanbd_"+str(model_name)+".h5"))
 fig1=plt.figure()
 locPrediction = model.predict(WifiTest, batch_size=100)
 locpredlabel=np.argmax(locPrediction,axis=1)+mins
@@ -99,7 +94,7 @@ plt.xlabel("x-latitude")
 plt.ylabel("y-longitude")
 plt.title(str(model_name)+" Prediction")
 fig1.savefig("romaniapredictionpng/"+str(model_name)+"_locprediction.png")
-wandb.log({"chart": wandb.Image("romaniapredictionpng/"+str(model_name)+"_locprediction.png")})
+#wandb.log({"chart": wandb.Image("romaniapredictionpng/"+str(model_name)+"_locprediction.png")})
 #draw cdf picture
 fig=plt.figure()
 bin_edge,cdf=pf.cdfdiff(target=locationtest,predict=loclatlng)
@@ -112,4 +107,4 @@ plt.legend(str(model_name),loc='upper right')
 plt.grid(True)
 plt.title((str(model_name)+' CDF'))
 fig.savefig("romaniacdf/"+str(model_name)+"_CDF.pdf")
-wandb.log({"chart": wandb.Image("romaniacdf/"+str(model_name)+"_CDF.pdf")})
+#wandb.log({"chart": wandb.Image("romaniacdf/"+str(model_name)+"_CDF.pdf")})
