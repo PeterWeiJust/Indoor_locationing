@@ -19,7 +19,7 @@ from wandb.keras import WandbCallback
 
 # Hyper-parameters
 sensor_input_size = 3
-wifi_input_size = 193
+wifi_input_size = 43
 hidden_size = 128
 batch_size = 100
 output_dim = 2
