@@ -175,8 +175,8 @@ class DownsampleDataset(torch.utils.data.Dataset):
 
 def read_wifi_data_classification(file_start,file_end):
     if file_start==file_end:     
-        path='sensordata/dup_sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
-        dataset=pd.read_csv(path,usecols=[i for i in range(16,209)]) 
+        path='sensordata/sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
+        dataset=pd.read_csv(path,usecols=[i for i in range(16,59)]) 
         dataset = dataset.dropna()
         Y=pd.read_csv(path,usecols=[209]) 
         Y=np.array(Y)
@@ -186,8 +186,8 @@ def read_wifi_data_classification(file_start,file_end):
         res_label=[]
         for file_num in range (file_start-1,file_end):
             file_num=file_num+1
-            path='sensordata/dup_sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
-            data=pd.read_csv(path,usecols=[i for i in range(16,209)])
+            path='sensordata/sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
+            data=pd.read_csv(path,usecols=[i for i in range(16,59)])
             data_label=pd.read_csv(path,usecols=[209])
             res_label.append(data_label)
             wifi.append(data)
@@ -200,8 +200,8 @@ def read_wifi_data_classification(file_start,file_end):
 
 def read_wifi_data(file_start,file_end):
     if file_start==file_end:     
-        path='sensordata/dup_sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
-        dataset=pd.read_csv(path,usecols=[i for i in range(16,209)]) 
+        path='sensordata/sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
+        dataset=pd.read_csv(path,usecols=[i for i in range(16,59)]) 
         dataset = dataset.dropna()
         Y=pd.read_csv(path,usecols=[i for i in range(14,16)]) 
         Y=np.array(Y)#convert df to array
@@ -213,8 +213,8 @@ def read_wifi_data(file_start,file_end):
         res_label=[]
         for file_num in range (file_start-1,file_end):
             file_num=file_num+1
-            path='sensordata/dup_sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
-            data=pd.read_csv(path,usecols=[i for i in range(16,209)])
+            path='sensordata/sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
+            data=pd.read_csv(path,usecols=[i for i in range(16,59)])
             data_label=pd.read_csv(path,usecols=[i for i in range(14,16)])
             res_label.append(data_label)
             wifi.append(data)
@@ -241,7 +241,7 @@ def read_data(file_start,file_end):
     if file_start==file_end:
         label_num=count_label_num(file_start)
         path='timestep100/1_'+str(file_start)+'timestep100.csv'
-        label_path='sensordata/dup_sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
+        label_path='sensordata/sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
         dataset = pd.read_csv(path,usecols = [12,13,14,15,16])
         dataset_label = pd.read_csv(label_path,usecols = [11,12,13,14,15])
         X=dataset.iloc[0:label_num*timestep,0:3]
@@ -258,7 +258,7 @@ def read_data(file_start,file_end):
             file_num=file_num+1
             label_num=count_label_num(file_num)
             path='timestep100/1_'+str(file_num)+'timestep100.csv'
-            label_path='sensordata/dup_sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
+            label_path='sensordata/sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
             data = pd.read_csv(path,usecols = [12,13,14,15,16])
             data_label = pd.read_csv(label_path,usecols = [11,12,13,14,15])
             data = data.iloc[0:label_num*timestep,0:5]
@@ -280,10 +280,10 @@ def read_overlap_data(file_start,file_end):
     if file_start==file_end:
         label_num=count_label_num(file_start)
         path='timestep100/1_'+str(file_start)+'timestep100.csv'
-        label_path='sensordata/dup_sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
+        label_path='sensordata/sensor_wifi_1_'+str(file_start)+'_timestep100.csv'
         dataset = pd.read_csv(path,usecols = [12,13,14,15,16])
         dataset = dataset.dropna()
-        wifidata = pd.read_csv(label_path,usecols=[i for i in range(16,209)])
+        wifidata = pd.read_csv(label_path,usecols=[i for i in range(16,59)])
         wifidata = wifidata.dropna()
         dataset_label = pd.read_csv(label_path,usecols = [11,12,13,14,15])
         X=dataset.iloc[0:label_num*timestep,0:3]
@@ -302,9 +302,9 @@ def read_overlap_data(file_start,file_end):
             file_num=file_num+1
             label_num=count_label_num(file_num)
             path='timestep100/1_'+str(file_num)+'timestep100.csv'
-            label_path='sensordata/dup_sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
+            label_path='sensordata/sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
             data = pd.read_csv(path,usecols = [12,13,14,15,16])
-            wifidata = pd.read_csv(label_path,usecols=[i for i in range(16,209)])
+            wifidata = pd.read_csv(label_path,usecols=[i for i in range(16,59)])
             data_label = pd.read_csv(label_path,usecols = [11,12,13,14,15])
             data = data.iloc[0:label_num*timestep,0:5]
             data_label = data_label.iloc[:,0:5]
@@ -387,7 +387,7 @@ def normalisation(X):#Scale data to the range of -1:1
     return normalized_X
 
 def count_label_num(file_num):
-    countlabel_path='sensordata/dup_sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
+    countlabel_path='sensordata/sensor_wifi_1_'+str(file_num)+'_timestep100.csv'
     dataset = pd.read_csv(countlabel_path,usecols = [11,12,13,14,15])
     label_num=dataset.shape[0]
     return label_num
