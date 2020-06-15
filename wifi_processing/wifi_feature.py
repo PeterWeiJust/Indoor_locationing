@@ -58,5 +58,5 @@ def write_ap_to_file(wr, filename):
 
 
 wifi_filename = "wifi_id.txt"
-wr1 = WifiRecord("./Timed Data")
+wr1 = WifiRecord("Timed Data")
 write_ap_to_file(wr1, wifi_filename)

@@ -92,7 +92,7 @@ def parse_wifi(dir, f_id):
 
     df = pd.DataFrame(list_t_wifi)
     df.columns = ['t', 'delta_t'] + ['ap' + str(i) for i in range(len(wifi_vector)-2)]
-    out_file = dir + "/scenario" + f_id[22] + "-route.csv"
+    out_file = "Timed Data/Scenario_1" + "/scenario1-" + f_id[22] + "route.csv"
     if os.path.isfile(out_file):
         os.remove(out_file)
     df.to_csv(out_file)
@@ -115,4 +115,4 @@ def iterate(path):
             # using "continue" here is the same as using "pass"
 
 
-iterate("./Timed Data")
+iterate("Timed Data")
