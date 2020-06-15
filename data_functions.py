@@ -20,9 +20,9 @@ class SensorDataset(torch.utils.data.Dataset):
     def __init__(self,mode="train",transform=torch.from_numpy):
         self.mode=mode
         self.transform=transform
-        self.trainx,self.trainy=read_data(1,24)
-        self.valx,self.valy=read_data(25,31)
-        self.testx,self.testy=read_data(32,32)
+        self.trainx,self.trainy=read_data(1,6)
+        self.valx,self.valy=read_data(7,7)
+        self.testx,self.testy=read_data(8,8)
         self.length=len(self.trainx)+len(self.testx)
     
     
@@ -55,9 +55,9 @@ class WifiDataset(torch.utils.data.Dataset):
     def __init__(self,mode="train",transform=torch.from_numpy):
         self.mode=mode
         self.transform=transform
-        self.trainx,self.trainy=read_wifi_data(1,24)
-        self.valx,self.valy=read_wifi_data(25,31)
-        self.testx,self.testy=read_wifi_data(32,32)
+        self.trainx,self.trainy=read_wifi_data(1,6)
+        self.valx,self.valy=read_wifi_data(7,7)
+        self.testx,self.testy=read_wifi_data(8,8)
         self.length=len(self.trainx)+len(self.valx)+len(self.testx)
     
     
@@ -125,20 +125,20 @@ class DownsampleDataset(torch.utils.data.Dataset):
         self.transform=transform
         
         self.sensortrain,self.labeltrain,self.wifitrain=downsample_data(1,1,tw,slide)
-        for i in range(2,25):
+        for i in range(2,7):
             sensortrain,labeltrain,wifitrain=downsample_data(i, i, tw, slide)
             self.sensortrain=np.concatenate((self.sensortrain, sensortrain),axis=0)
             self.labeltrain=np.concatenate((self.labeltrain, labeltrain),axis=0)
             self.wifitrain=np.concatenate((self.wifitrain, wifitrain),axis=0)
         
-        self.sensorval,self.labelval,self.wifival=downsample_data(25,25,tw,slide)
-        for i in range(26,32):
+        self.sensorval,self.labelval,self.wifival=downsample_data(7,7,tw,slide)
+        for i in range(9,8):
             sensorval,labelval,wifival=downsample_data(i, i, tw, slide)
             self.sensorval=np.concatenate((self.sensorval, sensorval),axis=0)
             self.labelval=np.concatenate((self.labelval, labelval),axis=0)
             self.wifival=np.concatenate((self.wifival, wifival),axis=0)
 
-        self.sensortest,self.labeltest,self.wifitest=downsample_data(32,32,tw,slide)
+        self.sensortest,self.labeltest,self.wifitest=downsample_data(8,8,tw,slide)
         self.length=len(self.sensortrain)+len(self.sensortest)
     
     
