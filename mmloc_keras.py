@@ -92,8 +92,8 @@ plt.ylabel("y-longitude")
 plt.title(str(model_name)+" Prediction")
 fig1.savefig("romaniapredictionpng/"+str(model_name)+"_locprediction.png")
 wandb.log({"chart": wandb.Image("romaniapredictionpng/"+str(model_name)+"_locprediction.png")})
-#draw cdf picture
 
+#draw cdf picture
 fig=plt.figure()
 bin_edge,cdf=pf.cdfdiff(target=locationtest,predict=locPrediction)
 plt.plot(bin_edge[0:-1],cdf,linestyle='--',label=str(model_name),color='r')
